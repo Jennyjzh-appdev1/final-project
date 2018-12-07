@@ -1,0 +1,18 @@
+<h1>
+  Edit location #<%= @location.id %>
+</h1>
+
+<hr>
+
+<form action="/update_location/<%= @location.id %>" method="post">
+
+  <button class="btn btn-block btn-outline-secondary">
+    Update location
+  </button>
+</form>
+
+<hr>
+
+<a href="/locations">
+  Go back
+</a>

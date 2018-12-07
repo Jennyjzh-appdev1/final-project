@@ -1,0 +1,51 @@
+<div class="row mb-3">
+  <div class="col-md-8 offset-md-2">
+    <h1>
+      Category #<%= @category.id %> details
+    </h1>
+
+    <div class="row mb-3">
+      <div class="col">
+        <a href="/categories" class="btn btn-block btn-outline-secondary">
+          Go back
+        </a>
+      </div>
+
+      <div class="col">
+        <a href="/categories/<%= @category.id %>/edit" class="btn btn-block btn-outline-secondary">
+          Edit category
+        </a>
+      </div>
+
+      <div class="col">
+        <a href="/delete_category/<%= @category.id %>" class="btn btn-block btn-outline-secondary">
+          Delete category
+        </a>
+      </div>
+    </div>
+
+    <dl>
+      <dt>
+        Category
+      </dt>
+      <dd>
+        <%= @category.category %>
+      </dd>
+
+      <dt>
+        Created at
+      </dt>
+      <dd>
+        <%= time_ago_in_words(@category.created_at) %> ago
+      </dd>
+
+      <dt>
+        Updated at
+      </dt>
+      <dd>
+        <%= time_ago_in_words(@category.updated_at) %> ago
+      </dd>
+    </dl>
+  </div>
+</div>
+

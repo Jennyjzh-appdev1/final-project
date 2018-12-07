@@ -1,0 +1,34 @@
+<% if @category.errors.any? %>
+  <% @category.errors.full_messages.each do |message| %>
+    <div class="alert">
+      <%= message %>
+    </div>
+  <% end %>
+<% end %>
+
+<h1>
+  Edit category #<%= @category.id %>
+</h1>
+
+<hr>
+
+<form action="/update_category/<%= @category.id %>" method="post">
+
+  <div class="form-group">
+    <label for="category">
+      Category
+    </label>
+
+    <input type="text" id="category" name="category" class="form-control" value="<%= @category.category %>">
+  </div>
+
+  <button class="btn btn-block btn-outline-secondary">
+    Update category
+  </button>
+</form>
+
+<hr>
+
+<a href="/categories">
+  Go back
+</a>

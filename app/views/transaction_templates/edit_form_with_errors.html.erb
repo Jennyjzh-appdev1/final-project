@@ -1,0 +1,66 @@
+<% if @transaction.errors.any? %>
+  <% @transaction.errors.full_messages.each do |message| %>
+    <div class="alert">
+      <%= message %>
+    </div>
+  <% end %>
+<% end %>
+
+<h1>
+  Edit transaction #<%= @transaction.id %>
+</h1>
+
+<hr>
+
+<form action="/update_transaction/<%= @transaction.id %>" method="post">
+
+  <div class="form-group">
+    <label for="buyer_id">
+      Buyer
+    </label>
+
+    <input type="text" id="buyer_id" name="buyer_id" class="form-control" value="<%= @transaction.buyer_id %>">
+  </div>
+
+  <div class="form-group">
+    <label for="seller_id">
+      Seller
+    </label>
+
+    <input type="text" id="seller_id" name="seller_id" class="form-control" value="<%= @transaction.seller_id %>">
+  </div>
+
+  <div class="form-group">
+    <label for="item_id">
+      Item
+    </label>
+
+    <input type="text" id="item_id" name="item_id" class="form-control" value="<%= @transaction.item_id %>">
+  </div>
+
+  <div class="form-group">
+    <label for="sale_price">
+      Sale price
+    </label>
+
+    <input type="text" id="sale_price" name="sale_price" class="form-control" value="<%= @transaction.sale_price %>">
+  </div>
+
+  <div class="form-group">
+    <label for="notes">
+      Notes
+    </label>
+
+    <input type="text" id="notes" name="notes" class="form-control" value="<%= @transaction.notes %>">
+  </div>
+
+  <button class="btn btn-block btn-outline-secondary">
+    Update transaction
+  </button>
+</form>
+
+<hr>
+
+<a href="/transactions">
+  Go back
+</a>

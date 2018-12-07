@@ -1,0 +1,18 @@
+<h1>
+  Edit status #<%= @status.id %>
+</h1>
+
+<hr>
+
+<form action="/update_status/<%= @status.id %>" method="post">
+
+  <button class="btn btn-block btn-outline-secondary">
+    Update status
+  </button>
+</form>
+
+<hr>
+
+<a href="/statuses">
+  Go back
+</a>

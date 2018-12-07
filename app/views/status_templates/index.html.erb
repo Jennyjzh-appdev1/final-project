@@ -1,0 +1,58 @@
+<div class="row mb-3">
+  <div class="col-md-12">
+    <h1>
+      All statuses
+    </h1>
+
+    <a href="/statuses/new" class="btn btn-block btn-outline-secondary">
+      Add a new status
+    </a>
+  </div>
+</div>
+
+
+<hr>
+
+<div class="row mb-3">
+  <div class="col-md-12">
+    <table class="table">
+      <tr>
+        <th>
+          ID
+        </th>
+
+        <th>
+          Created at
+        </th>
+
+        <th>
+          Updated at
+        </th>
+
+        <th>
+        </th>
+      </tr>
+
+      <% @statuses.each do |status| %>
+      <tr>
+        <td>
+          <%= status.id %>
+        </td>
+
+        <td>
+          <%= time_ago_in_words(status.created_at) %> ago
+        </td>
+        <td>
+          <%= time_ago_in_words(status.updated_at) %> ago
+        </td>
+
+        <td>
+          <a href="/statuses/<%= status.id %>">
+            Show details
+          </a>
+        </td>
+      </tr>
+      <% end %>
+    </table>
+  </div>
+</div>

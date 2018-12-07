@@ -1,0 +1,99 @@
+<!-- Validation failure messages -->
+<% if @item.present? %>
+  <% if @item.errors.any? %>
+    <% @item.errors.full_messages.each do |message| %>
+      <div class="alert alert-danger">
+        <%= message %>
+      </div>
+    <% end %>
+  <% end %>
+<% end %>
+
+
+<h1>
+  Add a new item
+</h1>
+
+
+<hr>
+
+<!--<form action="/create_item" method="post">-->
+<form action="/create_item" method="post" class="form-horizontal" enctype="multipart/form-data">
+
+  <div class="form-group">
+    <label for="title">
+      Title
+    </label>
+
+    <input type="text" id="title" name="title" class="form-control">
+  </div>
+
+  <div class="form-group">
+    <label for="description">
+      Description
+    </label>
+
+    <input type="text" id="description" name="description" class="form-control">
+  </div>
+
+<!--Hidden input for seller-->
+  <div class="form-group">
+    <input type="hidden" id="seller_id" name="seller_id" value="<%= current_user.id %>" class="form-control">
+  </div>
+
+  <div class="form-group">
+    <label for="price">
+      Price
+    </label>
+    <input type="text" id="price" name="price" class="form-control">
+  </div>
+
+  <div class="form-group">
+    <label for="address">
+      Address
+    </label>
+    <input type="text" id="address" name="address" class="form-control">
+  </div>
+
+<!--Creating photo upload-->
+  <div class="form-group">
+    <label for="photo">
+      Photo
+    </label>
+    <input type="file" id="photo" name="photo" class="form-control">
+  </div>
+
+<!--Select location-->
+  <div class="form-group">
+    <label for="location_id">
+      Location
+    </label>
+    <%= select_tag("location_id", options_from_collection_for_select(Location.all, :id, :location, :class => "form-control")) %>
+  </div>
+
+<!--Select status of item-->
+  <div class="form-group">
+    <label for="status_id">
+      Status
+    </label>
+    <%= select_tag("status_id", options_from_collection_for_select(Status.all, :id, :status, :class => "form-control")) %>
+  </div>
+
+<!--Select item type-->
+  <div class="form-group">
+    <label for="category_id">
+      Item type
+    </label>
+    <%= select_tag("category_id", options_from_collection_for_select(Category.all, :id, :category, :class => "form-control")) %>
+  </div>
+
+  <button class="btn btn-block btn-outline-secondary">
+    Create item
+  </button>
+</form>
+
+<hr>
+
+<a href="/items">
+  Go back
+</a>

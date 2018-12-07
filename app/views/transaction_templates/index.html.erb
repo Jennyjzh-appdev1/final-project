@@ -1,0 +1,98 @@
+<div class="row mb-3">
+  <div class="col-md-12">
+    <h1>
+      All transactions
+    </h1>
+
+    <a href="/transactions/new" class="btn btn-block btn-outline-secondary">
+      Add a new transaction
+    </a>
+  </div>
+</div>
+
+
+<hr>
+
+<div class="row mb-3">
+  <div class="col-md-12">
+    <table class="table">
+      <tr>
+        <th>
+          ID
+        </th>
+
+        <th>
+          Buyer
+        </th>
+
+        <th>
+          Seller
+        </th>
+
+        <th>
+          Item
+        </th>
+
+        <th>
+          Sale price
+        </th>
+
+        <th>
+          Notes
+        </th>
+
+        <th>
+          Created at
+        </th>
+
+        <th>
+          Updated at
+        </th>
+
+        <th>
+        </th>
+      </tr>
+
+      <% @transactions.each do |transaction| %>
+      <tr>
+        <td>
+          <%= transaction.id %>
+        </td>
+
+        <td>
+          <%= transaction.buyer_id %>
+        </td>
+
+        <td>
+          <%= transaction.seller_id %>
+        </td>
+
+        <td>
+          <%= transaction.item_id %>
+        </td>
+
+        <td>
+          <%= transaction.sale_price %>
+        </td>
+
+        <td>
+          <%= transaction.notes %>
+        </td>
+
+        <td>
+          <%= time_ago_in_words(transaction.created_at) %> ago
+        </td>
+        <td>
+          <%= time_ago_in_words(transaction.updated_at) %> ago
+        </td>
+
+        <td>
+          <a href="/transactions/<%= transaction.id %>">
+            Show details
+          </a>
+        </td>
+      </tr>
+      <% end %>
+    </table>
+  </div>
+</div>

@@ -1,0 +1,130 @@
+<div class="row mb-3">
+  <div class="col-md-12">
+    <h1>
+      All items
+    </h1>
+
+    <a href="/items/new" class="btn btn-block btn-outline-secondary">
+      Add a new item
+    </a>
+  </div>
+</div>
+
+
+<hr>
+
+<div class="row mb-3">
+  <div class="col-md-12">
+    <table class="table">
+      <tr>
+        <th>
+          ID
+        </th>
+
+        <th>
+          Title
+        </th>
+
+        <th>
+          Description
+        </th>
+
+        <th>
+          Seller
+        </th>
+
+        <th>
+          Price
+        </th>
+
+        <th>
+          Address
+        </th>
+
+        <th>
+          Photo
+        </th>
+
+        <th>
+          Location
+        </th>
+
+        <th>
+          Status
+        </th>
+
+        <th>
+          Item type
+        </th>
+
+        <th>
+          Created at
+        </th>
+
+        <th>
+          Updated at
+        </th>
+
+        <th>
+        </th>
+      </tr>
+
+      <% @items.each do |item| %>
+      <tr>
+        <td>
+          <%= item.id %>
+        </td>
+
+        <td>
+          <%= item.title %>
+        </td>
+
+        <td>
+          <%= item.description %>
+        </td>
+
+        <td>
+          <%= item.seller_id %>
+        </td>
+
+        <td>
+          <%= item.price %>
+        </td>
+
+        <td>
+          <%= item.address %>
+        </td>
+
+        <td>
+          <%= item.photo %>
+        </td>
+
+        <td>
+          <%= item.location_id %>
+        </td>
+
+        <td>
+          <%= item.status_id %>
+        </td>
+
+        <td>
+          <%= item.category_id %>
+        </td>
+
+        <td>
+          <%= time_ago_in_words(item.created_at) %> ago
+        </td>
+        <td>
+          <%= time_ago_in_words(item.updated_at) %> ago
+        </td>
+
+        <td>
+          <a href="/items/<%= item.id %>">
+            Show details
+          </a>
+        </td>
+      </tr>
+      <% end %>
+    </table>
+  </div>
+</div>
