@@ -11,7 +11,9 @@ class ItemsController < ApplicationController
   # end 
 
   def index
-    @items = Item.all
+    @q = Item.ransack(params[:q])
+    # @items = @q.result
+    @items = @q.result(:distinct => true)
     render("item_templates/index.html.erb")
   end
 

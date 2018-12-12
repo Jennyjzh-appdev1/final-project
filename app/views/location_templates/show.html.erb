@@ -36,7 +36,14 @@
         Updated at
       </dt>
       <dd>
-        <%= time_ago_in_words(@location.updated_at) %> ago
+        <%= time_ago_in_words(@location.updated_at) %> 
+      </dd>
+      
+      <dt>
+        Location
+      </dt>
+      <dd>
+        <%= @location.location %> ago
       </dd>
     </dl>
   </div>

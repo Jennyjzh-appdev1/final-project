@@ -23,7 +23,7 @@ class Item < ActiveRecord::Base
     has_many :transactions, :dependent => :destroy
     has_many :comments, :dependent => :destroy
     has_many :bookmarks, :dependent => :destroy
-    belongs_to :location
+    belongs_to :location, :class_name => "Location", :foreign_key => "location_id"
     belongs_to :status
     belongs_to :category
 end

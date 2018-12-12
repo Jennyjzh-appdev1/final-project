@@ -38,7 +38,7 @@ class LocationsController < ApplicationController
 
   def update_row
     @location = Location.find(params.fetch("id_to_modify"))
-
+    @location.location = params.fetch("location")
 
     if @location.valid?
       @location.save

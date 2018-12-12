@@ -18,6 +18,8 @@ class BookmarksController < ApplicationController
   end
 
   def create_row
+    
+    #check if there's a user signed in. if not, redirect to sign in page
     @bookmark = Bookmark.new
 
     @bookmark.item_id = params.fetch("item_id")

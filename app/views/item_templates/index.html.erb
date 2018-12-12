@@ -1,17 +1,132 @@
-<div class="row mb-3">
-  <div class="col-md-12">
-    <h1>
-      All items
-    </h1>
 
-    <a href="/items/new" class="btn btn-block btn-outline-secondary">
-      Add a new item
-    </a>
-  </div>
-</div>
+
+
+<body>
+  
+<div class="container">
+  
+<!--Menu row for adding new items-->    
+    <div class="row">
+      <div class="col">
+          <a href="/items/new" class="btn btn-block btn-outline-secondary">
+            Add a new item
+          </a>
+      </div>
+    </div>
+
+<!--Row for search and other navigation    -->
+    <div class="row">
+    <!--Search form from ransack-->
+      <div class="col">
+        <%= search_form_for @q do |f| %>
+          <p class="lead">Narrow results:</p>
+            <div class="form-group">
+              <%= f.label :description_or_title_cont, "Search item" %>
+              <%= f.search_field :description_or_title_cont , :class => "form-control", :placeholder => "Search item description" %>
+            </div>
+        <%= f.submit :class => "btn btn-primary btn-block" %>    
+        <a href="/items" class="btn btn-default btn-block">Clear search</a>
+      </div>
+    </div>
+    
+  <hr>
+
+<!--Main content row - filters on left and postings on right    -->
+    <div class="row Content">
+        <div class="Filters col-md-2">
+          <p class="lead">Narrow results:</p>
+          
+        <!--Filtering forms-->
+           <div class="form-group">
+         
+       <!--  Filter by location    -->
+              <p>
+                <label>Search location</label>
+              <% @items.each do |item| %>
+                <label>
+                  <%= check_box_tag('q[location_id_eq_any][]', item.location_id, (true if @q.location_id_eq_any.try(:include?, item.location_id))) %>
+                  <%= Location.find(item.location_id).location %>
+                </label>
+              <% end %>
+              </p>
+      
+        <!--  Filter by item category    -->
+              <label>Search item type</label>
+              <% @items.each do |item| %>
+                <label>
+                  <%= check_box_tag('q[category_id_eq_any][]', item.category_id, (true if @q.category_id_eq_any.try(:include?, item.category_id))) %>
+                  <%= Category.find(item.category_id).category %>
+                </label>
+              <% end %>            
+            
+         <!--  Filter by item price    -->
+              <p>
+                <label>Place holder ----- Filter by item price</label>
+              </p>
+                           
+          <!--  Filter by item status    -->
+              <label>Search item type</label>
+              <%@items.each do |item| %>
+                <label>
+                  <%= check_box_tag('q[category_id_eq_any][]', item.status_id, (true if @q.status_id_eq_any.try(:include?, item.status_id))) %>
+                  <%= Status.find(item.status_id).status %>
+                </label>
+              <% end %>             
+            
+            
+            </div>
+           <%= f.submit :class => "btn btn-primary btn-block" %>
+          <a href="/items" class="btn btn-default btn-block">Clear filters</a>
+            <% end %>  
+        </div>
+        
+        
+        <div class="Content col-md-10">
+        <div class="card-columns">
+    
+    <% @items.each do |item| %>
+      <div class="card">
+        <img class="card-img-top" src="<%= item.photo %>" >
+        <div class="card-body">
+          <a href="/items/<%= item.id %>">
+            <h5 class="card-title"><%= item.title %></h5>
+          </a>
+          <p class="card-text"><%= item.location.location %></p>
+          <div>
+<!--How to put a sign up wall when user clicks on Bookmark listing?-->
+            <a href="/create_bookmark" method="post">
+              <button type="button" class="btn btn-primary btn-sm">Bookmark listing</button>
+            </a>
+          </div>
+        </div>
+      </div>  
+    <% end %>
+    
+  </div>  
+        </div>
+    </div>
+</div>  
+  
+  
+
 
 
 <hr>
+
+
+  
+
+  
+  
+
+
+
+
+
+
+
+
+
 
 <div class="row mb-3">
   <div class="col-md-12">
@@ -128,3 +243,6 @@
     </table>
   </div>
 </div>
+
+
+</body>

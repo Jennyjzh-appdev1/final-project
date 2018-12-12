@@ -28,6 +28,10 @@
         <th>
           Updated at
         </th>
+        
+        <th>
+            Location
+        </th>
 
         <th>
         </th>
@@ -44,6 +48,10 @@
         </td>
         <td>
           <%= time_ago_in_words(location.updated_at) %> ago
+        </td>
+        
+        <td>
+          <%= location.location %> 
         </td>
 
         <td>
