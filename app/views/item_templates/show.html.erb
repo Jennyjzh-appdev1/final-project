@@ -1,107 +1,92 @@
 <div class="row mb-3">
-  <div class="col-md-8 offset-md-2">
-    <h1>
-      Item #<%= @item.id %> details
-    </h1>
 
-    <div class="row mb-3">
-      <div class="col">
-        <a href="/items" class="btn btn-block btn-outline-secondary">
-          Go back
-        </a>
-      </div>
+  <div class="col-md-10 offset-md-1 mt-3">
+    <h4>
+      <%= @item.title %>
+    </h4>
 
-      <div class="col">
-        <a href="/items/<%= @item.id %>/edit" class="btn btn-block btn-outline-secondary">
-          Edit item
-        </a>
-      </div>
+  <div class="row">
+  
+    <div class="col-sm-6">
+      <img src="<%= @item.photo %>" class="img-fluid" alt="Responsive image">
+    </div>
+      
+    <div class="col-sm-6">
+  
+    <!--Bookmark form     -->
+        <form action="/create_bookmark" method="post">
+          <!-- Hidden input for authenticity token to protect from forgery -->
+        
+          <input name="authenticity_token" type="hidden" value="wWRk6ZyHrYb+mHzvOt0jkZUqzr627sqDxsA6PI2LLI/AU3d7OdKjxkuLMPIMmPlWUP+zDJC+0ETKHnu4WByLMQ==">
+          <input type="hidden" name="item_id" value="<%= @item.id%>">
+          <input type="hidden" name="user_id" value="<%= current_user.id %>">      
+      
+          
+          <% already_a_fav = Bookmark.where(item_id: @item.id, user_id: current_user.id).first %>
+          <% if already_a_fav == nil %>
+              <button class="btn btn-link pull-right" type="submit">
+                <i class="far fa-heart"></i>
+                  Bookmark this listing
+              </button>
+          <% else %>
+              <a href="/delete_bookmark/<%= Bookmark.where(user_id: current_user.id, item_id: @item.id).first.id %>" class="btn btn-link pull-right">
+                <i class="fas fa-heart"></i> 
+                  Remove bookmark
+              </a>
+      
+          <% end %>
+        </form>
+  <!-- end of bookmark form -->
+        
+        <hr>
+        <h5>Posted by <a href="/users/<%= @item.seller_id %>"><%= User.where(id: @item.seller_id).first.username %></a></h5>
+        <h6> Located at <%=Location.find(@item.location_id).location %></h6>
+        <h6> This item is <%= Status.find(@item.status_id).status %> !</h6>
+        <p> <%= @item.description %></p>
+    
+  <!--Display other user comments -->         
+        <div>
+          <% Comment.where(item_id: @item.id).each do |comment| %>
+            <p><div>
+            <small>
+              <a href="/users/<%=comment.user_id%>"><%= User.where(id: comment.user_id).first.username %></a>
+              <%= time_ago_in_words(comment.created_at) %> ago 
+            
+            <div>
+              <%= comment.comment %> </>
+            </div>
+            </small>
+            </p></div>
+          <% end %>
+        </div>         
+    
+  <!--Add a comment  -->       
+        <form action="/create_comment" method="post" class="pt-4">
+          <!-- Hidden input for authenticity token to protect from forgery -->
+          <input name="authenticity_token" type="hidden" value="HtFYBK0U12Y4YWPXUWnyruxatB2bqIO5v82sH+4BtqSTEWAuByAuADPB7ahlxqfRQMHhBCh1aEdZd8INFwYsGg==">
+          <input type="hidden" name="item_id" value="<%= @item.id%>">
+          <input type="hidden" name="user_id" value="<%= current_user.id %>">
+        
+          <!-- Label and input for body -->
+          <div class="form-group">
+            <label for="body" class="sr-only">
+              Body
+            </label>
+            
+            <div class="input-group">
+              <input type="text" id="comment" name="comment" class="form-control" placeholder="Add a comment..." required>
+              <span class="input-group-append">
+                <button class="btn btn-primary" type="submit">
+                  <i class="far fa-comment"></i>
+                  Add Comment
+                </button>
+              </span>
+            </div> <!-- input-group -->
+          </div>  <!-- form-group -->
+        </form>          
 
-      <div class="col">
-        <a href="/delete_item/<%= @item.id %>" class="btn btn-block btn-outline-secondary">
-          Delete item
-        </a>
       </div>
     </div>
-
-    <dl>
-      <dt>
-        Title
-      </dt>
-      <dd>
-        <%= @item.title %>
-      </dd>
-
-      <dt>
-        Description
-      </dt>
-      <dd>
-        <%= @item.description %>
-      </dd>
-
-      <dt>
-        Seller
-      </dt>
-      <dd>
-        <%= @item.seller_id %>
-      </dd>
-
-      <dt>
-        Price
-      </dt>
-      <dd>
-        <%= @item.price %>
-      </dd>
-
-      <dt>
-        Address
-      </dt>
-      <dd>
-        <%= @item.address %>
-      </dd>
-
-      <dt>
-        Photo
-      </dt>
-      <dd>
-        <%= @item.photo %>
-      </dd>
-
-      <dt>
-        Location
-      </dt>
-      <dd>
-        <%= @item.location_id %>
-      </dd>
-
-      <dt>
-        Status
-      </dt>
-      <dd>
-        <%= @item.status_id %>
-      </dd>
-
-      <dt>
-        Item type
-      </dt>
-      <dd>
-        <%= @item.category_id %>
-      </dd>
-
-      <dt>
-        Created at
-      </dt>
-      <dd>
-        <%= time_ago_in_words(@item.created_at) %> ago
-      </dd>
-
-      <dt>
-        Updated at
-      </dt>
-      <dd>
-        <%= time_ago_in_words(@item.updated_at) %> ago
-      </dd>
-    </dl>
   </div>
 </div>
 

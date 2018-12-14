@@ -1,6 +1,21 @@
-<h1>
+<hr>
+
+<!-- Validation failure messages -->
+<% if @item.present? %>
+  <% if @item.errors.any? %>
+    <% @item.errors.full_messages.each do |message| %>
+      <div class="alert alert-danger">
+        <%= message %>
+      </div>
+    <% end %>
+  <% end %>
+<% end %>
+
+
+
+<h5>
   Edit item #<%= @item.id %>
-</h1>
+</h5>
 
 <hr>
 
@@ -22,12 +37,9 @@
     <input type="text" id="description" name="description" class="form-control" value="<%= @item.description %>">
   </div>
 
+ <!--Hidden input for seller-->
   <div class="form-group">
-    <label for="seller_id">
-      Seller
-    </label>
-
-    <input type="text" id="seller_id" name="seller_id" class="form-control" value="<%= @item.seller_id %>">
+    <input type="hidden" id="seller_id" name="seller_id" value="<%=current_user.id%>" class="form-control">
   </div>
 
   <div class="form-group">
@@ -53,29 +65,37 @@
 
     <input type="text" id="photo" name="photo" class="form-control" value="<%= @item.photo %>">
   </div>
+  
+  <!--Creating photo upload-->
+  <div class="form-group">
+    <label for="photo">
+      Upload another photo
+    </label>
+    <input type="file" id="photo" name="photo" class="form-control">
+  </div>
 
+  <!--Select location-->
   <div class="form-group">
     <label for="location_id">
       Location
     </label>
-
-    <input type="text" id="location_id" name="location_id" class="form-control" value="<%= @item.location_id %>">
+    <%= select_tag("location_id", options_from_collection_for_select(Location.all, :id, :location, :class => "form-control")) %>
   </div>
 
+<!--Select status of item-->
   <div class="form-group">
     <label for="status_id">
       Status
     </label>
-
-    <input type="text" id="status_id" name="status_id" class="form-control" value="<%= @item.status_id %>">
+    <%= select_tag("status_id", options_from_collection_for_select(Status.all, :id, :status, :class => "form-control")) %>
   </div>
 
+<!--Select item type-->
   <div class="form-group">
     <label for="category_id">
       Item type
     </label>
-
-    <input type="text" id="category_id" name="category_id" class="form-control" value="<%= @item.category_id %>">
+    <%= select_tag("category_id", options_from_collection_for_select(Category.all, :id, :category, :class => "form-control")) %>
   </div>
 
   <button class="btn btn-block btn-outline-secondary">

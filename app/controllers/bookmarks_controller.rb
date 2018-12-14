@@ -1,4 +1,7 @@
 class BookmarksController < ApplicationController
+  
+   before_action :authenticate_user!
+   
   def index
     @bookmarks = Bookmark.all
 
@@ -18,7 +21,7 @@ class BookmarksController < ApplicationController
   end
 
   def create_row
-    
+   
     #check if there's a user signed in. if not, redirect to sign in page
     @bookmark = Bookmark.new
 
@@ -49,7 +52,7 @@ class BookmarksController < ApplicationController
     if @bookmark.valid?
       @bookmark.save
 
-      redirect_to("/bookmarks/#{@bookmark.id}", :notice => "Bookmark updated successfully.")
+      redirect_to("/bookmarks/#{@bookmark.id}")
     else
       render("bookmark_templates/edit_form_with_errors.html.erb")
     end
@@ -60,6 +63,6 @@ class BookmarksController < ApplicationController
 
     @bookmark.destroy
 
-    redirect_to("/bookmarks", :notice => "Bookmark deleted successfully.")
+    redirect_to("/items", :notice => "Bookmark deleted successfully.")
   end
 end

@@ -4,86 +4,115 @@
 <body>
   
 <div class="container">
-  
-<!--Menu row for adding new items-->    
-
-  <hr>
+<hr>
 
 <!--Main content row - filters on left and postings on right    -->
-    <div class="row Content">
-        <div class="Filters col-md-3">
-        
-        <%= search_form_for @q do |f| %>
-          <p class="lead">Narrow results:</p>
-            <div class="form-group form-inline">
-              <%= f.label :description_or_title_cont, "Search item" %>
-              <%= f.search_field :description_or_title_cont , :class => "form-control", :placeholder => "Search item description" %>
-            </div>
-
-      <!--Filtering-->
-           <div class="form-group">   
-       
-       <!--  Filter by location    -->
-                <h6>Search location</h6>
-                <% @items.each do |item| %>
-                  <dd>
-                    <%= check_box_tag('q[location_id_eq_any][]', item.location_id, (true if @q.location_id_eq_any.try(:include?, item.location_id))) %>
-                    <%= Location.find(item.location_id).location %>
-                  </dd>
-                <% end %>
-              
-              <p></p>
-              
+  <div class="row Content">
+    <div class="Filters col-md-2">
+      
+      <%= search_form_for @q do |f| %>
+      <p class="lead">Narrow results:</p>
+        <div class="form-group form-inline">
+          <%= f.label :description_or_title_cont, "Search item" %>
+          <%= f.search_field :description_or_title_cont , :class => "form-control", :placeholder => "Search item description" %>
+        </div>
+    
+        <!--Filtering forms-->
+       <div class="form-group">
+     
+         <!--  Filter by location    -->
+          <p>
+            <label>Filter by location</label>
+          <% @items.group('items.location_id').each do |item| %>
+            <label>
+              <%= check_box_tag('q[location_id_eq_any][]', item.location_id, (true if @q.location_id_eq_any.try(:include?, item.location_id))) %>
+              <%= Location.find(item.location_id).location %>
+            </label>
+          <% end %>
+          </p>
+  
         <!--  Filter by item category    -->
-              <h6>Search item type</h6>
-                <% @items.each do |item| %>
-                    <dd>
-                    <%= check_box_tag('q[category_id_eq_any][]', item.category_id, (true if @q.category_id_eq_any.try(:include?, item.category_id))) %>
-                    <%= Category.find(item.category_id).category %>
-                    </dd>
-                <% end %>            
-            
-          <!--  Filter by item status    -->
-              <h6>Search item type</h6>
-              <%@items.each do |item| %>
-                <dd>
-                  <%= check_box_tag('q[category_id_eq_any][]', item.status_id, (true if @q.status_id_eq_any.try(:include?, item.status_id))) %>
-                  <%= Status.find(item.status_id).status %>
-                </dd>
-              <% end %>             
-            
-          </div form>
-            
-           <%= f.submit :class => "btn btn-primary btn-block" %>
-          <a href="/items" class="btn btn-default btn-block">Clear filters</a>
-            <% end %>  
-        </div filters>
+         <p>  
+          <label>Filter by item type</label>
+          <% @items.group('items.category_id').each do |item| %>
+            <label>
+              <%= check_box_tag('q[category_id_eq_any][]', item.category_id, (true if @q.category_id_eq_any.try(:include?, item.category_id))) %>
+              <%= Category.find(item.category_id).category %>
+            </label>
+          <% end %>            
+        </p>
+      
+        <!--  Filter by item status    -->
+        <p>
+          <label>Filter by listing status</label>
+          <%@items.group('items.status_id').each do |item| %>
+            <label>
+              <%= check_box_tag('q[category_id_eq_any][]', item.status_id, (true if @q.status_id_eq_any.try(:include?, item.status_id))) %>
+              <%= Status.find(item.status_id).status %>
+            </label>
+          <% end %>             
+        </p>  
         
-        
-  <div class="Content col-md-9">
-    <div class="card-columns">
-    
-    <% @items.each do |item| %>
-      <div class="card">
-        <img class="card-img-top" src="<%= item.photo %>" >
-        <div class="card-body">
-          <a href="/items/<%= item.id %>">
-            <h5 class="card-title"><%= item.title %></h5>
-          </a>
-          <p class="card-text"><%= item.location.location %></p>
-          <div>
-    <!--How to put a sign up wall when user clicks on Bookmark listing?-->
-            <a href="/create_bookmark" method="post">
-              <button type="button" class="btn btn-primary btn-sm">Bookmark listing</button>
-            </a>
-          </div>
-        </div>
-      </div>  
-    <% end %>
-    
-  </div>  
-        </div>
+      </div>
+      
+      <%= f.submit :class => "btn btn-primary btn-block" %>
+      <a href="/items" class="btn btn-default btn-block">Clear filters</a>
+      <% end %>  
     </div>
+      
+      
+    <div class="Content col-md-10">
+      <div class="card-columns">
+    
+        <% @items.each do |item| %>
+          <div class="card">
+            <img class="card-img-top" src="<%= item.photo %>" >
+            <div class="card-body">
+              <a href="/items/<%= item.id %>">
+                <h5 class="card-title"><%= item.title %></h5>
+              </a>
+              <p class="card-text"><%= item.location.location %></p>
+              <div>
+
+            <!--Create bookmark form-->
+                <% if current_user.blank? %>
+                  <a href="/items/<%=item.id%>" method="post" >
+                    <button type="button" class="btn btn-primary btn-sm" type="submit">
+                      Bookmark Listing
+                    </button>
+                  </a>
+                  
+                <%else%>
+                  <form action="/create_bookmark" method="post">
+                    <!-- Hidden input for authenticity token to protect from forgery -->
+                  
+                    <input name="authenticity_token" type="hidden" value="wWRk6ZyHrYb+mHzvOt0jkZUqzr627sqDxsA6PI2LLI/AU3d7OdKjxkuLMPIMmPlWUP+zDJC+0ETKHnu4WByLMQ==">
+                    <input type="hidden" name="item_id" value="<%= item.id%>">
+                    <input type="hidden" name="user_id" value="<%= current_user.id %>">      
+                
+                    <% already_a_fav = Bookmark.where(item_id: item.id, user_id: current_user.id).first %>
+                    <% if already_a_fav == nil %>
+                        <button type="button" class="btn btn-primary btn-sm" type="submit">
+                          Bookmark listing
+                        </button>
+                    <% else %>
+                        <a href="/delete_bookmark/<%= Bookmark.where(user_id: current_user.id, item_id: item.id).first.id %>">
+                          <button type="button" class="btn btn-outline-primary btn-sm" type="submit">
+                            Remove bookmark
+                          </button>
+                        </a>
+                    <% end %>
+                  </form>
+               <%end%> 
+                
+              </div>
+            </div>
+          </div>  
+        <% end %>
+  
+      </div>  
+    </div>
+  </div>
 </div>  
   
   
@@ -91,137 +120,6 @@
 
 
 <hr>
-
-
-  
-
-  
-  
-
-
-
-
-
-
-
-
-
-
-<div class="row mb-3">
-  <div class="col-md-12">
-    <table class="table">
-      <tr>
-        <th>
-          ID
-        </th>
-
-        <th>
-          Title
-        </th>
-
-        <th>
-          Description
-        </th>
-
-        <th>
-          Seller
-        </th>
-
-        <th>
-          Price
-        </th>
-
-        <th>
-          Address
-        </th>
-
-        <th>
-          Photo
-        </th>
-
-        <th>
-          Location
-        </th>
-
-        <th>
-          Status
-        </th>
-
-        <th>
-          Item type
-        </th>
-
-        <th>
-          Created at
-        </th>
-
-        <th>
-          Updated at
-        </th>
-
-        <th>
-        </th>
-      </tr>
-
-      <% @items.each do |item| %>
-      <tr>
-        <td>
-          <%= item.id %>
-        </td>
-
-        <td>
-          <%= item.title %>
-        </td>
-
-        <td>
-          <%= item.description %>
-        </td>
-
-        <td>
-          <%= item.seller_id %>
-        </td>
-
-        <td>
-          <%= item.price %>
-        </td>
-
-        <td>
-          <%= item.address %>
-        </td>
-
-        <td>
-          <%= item.photo %>
-        </td>
-
-        <td>
-          <%= item.location_id %>
-        </td>
-
-        <td>
-          <%= item.status_id %>
-        </td>
-
-        <td>
-          <%= item.category_id %>
-        </td>
-
-        <td>
-          <%= time_ago_in_words(item.created_at) %> ago
-        </td>
-        <td>
-          <%= time_ago_in_words(item.updated_at) %> ago
-        </td>
-
-        <td>
-          <a href="/items/<%= item.id %>">
-            Show details
-          </a>
-        </td>
-      </tr>
-      <% end %>
-    </table>
-  </div>
-</div>
 
 
 </body>

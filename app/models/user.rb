@@ -29,4 +29,11 @@ class User < ApplicationRecord
   has_many :comments, :dependent => :destroy
   has_many :purchases, :class_name => "Transaction", :foreign_key => "buyer_id", :dependent => :destroy
   has_many :sales, :class_name => "Transaction", :foreign_key => "seller_id", :dependent => :destroy
+  
+  validates :username, presence: true
+  validates :username, uniqueness: {
+    scope: :email,
+    message: "should be unique with respect to email"
+  }
+  
 end

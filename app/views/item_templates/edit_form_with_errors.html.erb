@@ -1,8 +1,11 @@
-<% if @item.errors.any? %>
-  <% @item.errors.full_messages.each do |message| %>
-    <div class="alert">
-      <%= message %>
-    </div>
+<!-- Validation failure messages -->
+<% if @item.present? %>
+  <% if @item.errors.any? %>
+    <% @item.errors.full_messages.each do |message| %>
+      <div class="alert alert-danger">
+        <%= message %>
+      </div>
+    <% end %>
   <% end %>
 <% end %>
 

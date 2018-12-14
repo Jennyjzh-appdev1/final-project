@@ -1,14 +1,14 @@
 class ItemsController < ApplicationController
   
-  # before_action :current_user_must_be_item_poster, :only => [:edit_form, :update_row, :destroy_row]
+  before_action :current_user_must_be_item_poster, :only => [:edit_form, :update_row, :destroy_row]
 
-  # def current_user_must_be_item_seller
-  #   item = Item.find(params["id_to_display"] || params["prefill_with_id"] || params["id_to_modify"] || params["id_to_remove"])
+  def current_user_must_be_item_seller
+   item = Item.find(params["id_to_display"] || params["prefill_with_id"] || params["id_to_modify"] || params["id_to_remove"])
 
-    # unless current_user == item.poster
-    #   redirect_to :back, :alert => "You cannot edit others' posts."
-    # end
-  # end 
+  unless current_user == item.poster
+    redirect_to :back, :alert => "You cannot edit others' posts."
+  end
+  end 
 
   def index
     @q = Item.ransack(params[:q])
@@ -22,6 +22,7 @@ class ItemsController < ApplicationController
     @comment = Comment.new
     @transaction = Transaction.new
     @item = Item.find(params.fetch("id_to_display"))
+    @user = User.find(current_user.id)
 
     render("item_templates/show.html.erb")
   end

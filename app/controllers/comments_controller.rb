@@ -22,6 +22,7 @@ class CommentsController < ApplicationController
 
     @comment.item_id = params.fetch("item_id")
     @comment.user_id = params.fetch("user_id")
+    @comment.comment = params.fetch("comment")
 
     if @comment.valid?
       @comment.save
@@ -43,6 +44,7 @@ class CommentsController < ApplicationController
 
     @comment.item_id = params.fetch("item_id")
     @comment.user_id = params.fetch("user_id")
+    @comment.comment = params.fetch("comment")
 
     if @comment.valid?
       @comment.save

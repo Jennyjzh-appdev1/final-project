@@ -1,0 +1,86 @@
+
+
+<body>    
+
+    <div class="row">
+
+    <hr>
+
+<% @userbookmarks.each do |bookmark| %>
+<% item = Item.where(id: bookmark.item_id).first %>
+    
+    <div class="row mb-5">
+      <div class="col-md-8 offset-md-2">
+ 
+        <div class="card" >
+            <div class="card-header">
+                <h5 class="card-title">
+                  <a href="/users/<%= item.seller_id %>"><%= User.where(id: item.seller_id).first.username %></a>
+                  <small>
+                    <%= time_ago_in_words(item.created_at) %> ago
+                  </small>
+                </h5>
+            </div>
+
+            <div class="card-body">
+                <a href="/items/<%= item.id%>">
+                     <img src="<%= item.photo %>" class="card-img-top" alt="Card image cap">
+                </a>
+                
+              <h6> Located at <%= Location.find(item.location_id).location %></h6>
+              <h6> This item is <%= Status.find(item.status_id).status %> !</h6>
+              <p> <%= item.description %></p>
+            </div>
+            
+            <!--Display other user comments -->         
+        <div>
+          <% Comment.where(item_id: item.id).each do |comment| %>
+            <p><div>
+            <small>
+              <a href="/users/<%=comment.user_id%>"><%= User.where(id: comment.user_id).first.username %></a>
+              <%= time_ago_in_words(comment.created_at) %> ago 
+            
+            <div>
+              <%= comment.comment %> </>
+            </div>
+            </small>
+            </p></div>
+          <% end %>
+        </div>         
+      
+    <!--Add a comment  -->       
+      <form action="/create_comment" method="post" class="pt-4">
+        <!-- Hidden input for authenticity token to protect from forgery -->
+        <input name="authenticity_token" type="hidden" value="HtFYBK0U12Y4YWPXUWnyruxatB2bqIO5v82sH+4BtqSTEWAuByAuADPB7ahlxqfRQMHhBCh1aEdZd8INFwYsGg==">
+        <input type="hidden" name="item_id" value="<%= item.id%>">
+        <input type="hidden" name="user_id" value="<%= current_user.id %>">
+      
+        <!-- Label and input for body -->
+        <div class="form-group">
+          <label for="body" class="sr-only">
+            Body
+          </label>
+          
+          <div class="input-group">
+            <input type="text" id="comment" name="comment" class="form-control" placeholder="Add a comment..." required>
+            <span class="input-group-append">
+              <button class="btn btn-primary" type="submit">
+                <i class="far fa-comment"></i>
+                Add Comment
+              </button>
+            </span>
+          </div> <!-- input-group -->
+        </div>  <!-- form-group -->
+      </form>          
+
+            </p>
+            
+            
+        </div>
+      </div>
+    </div>
+<% end %>
+
+
+
+</body>
